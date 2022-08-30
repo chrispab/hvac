@@ -21,14 +21,21 @@
 //         return self.d_state
 
 class Light {
-  constructor(state = OFF) {
-    //pass in the hardware depedency
+  constructor(lightHardwareIOPin) {
+    //pass in the hardware depedent io pin object
+    //should have ability to R/W  and any other custom funcs such as take reading from custom hardware
+
     console.log('creating light object');
-    this._state = state;
+    this._hardwareIOPin = lightHardwareIOPin;// set the hardware IO pin object - has methods like set(light ON or OFF),get(current lights state, may include custom hardware routine e.g. using RC LDR pin)
+
+
   }
   get state() {
     // Measure timing using GPIO4
     // abstract with intermidiate func from hardware
     return this._state;
+  }
+  set state(){
+    //set the light state
   }
 }

@@ -1,4 +1,4 @@
-class LightHW {
+class LightHWIO {
   constructor(state = OFF) {
     //pass in the hardware depedency
     console.log('creating light object');
