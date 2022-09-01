@@ -16,10 +16,10 @@ const transmitter = require('./lib/transmitter');
 //-----------------------------------------------------
 // include onoff to interact with the GPIO
 const LED = new Gpio(4, 'out'); // use GPIO pin 4, and specify that it is output
-const blinkInterval = setInterval(blinkLED, 250); // run the blinkLED function every 250ms
+// const blinkInterval = setInterval(blinkLED, 250); // run the blinkLED function every 250ms
 
 function blinkLED() { // function to start blinking
-  log.error('blink');
+  // log.info('blink');
   if (LED.readSync() === 0) { // check the pin state, if the state is 0 (or off)
     LED.writeSync(1); // set pin state to 1 (turn LED on)
   } else {
@@ -33,12 +33,13 @@ function endBlink() { // function to stop blinking
   LED.unexport(); // Unexport GPIO to free resources
 }
 
-setTimeout(endBlink, 5000); // stop blinking after 5 seconds
+// setTimeout(endBlink, 5000); // stop blinking after 5 seconds
 //------------------------------------------------------------
 const app = {};
 
 app.init = function init() {
   log.info('Started hvac zone controller');
+  console.log(process.env);
   transmitter.connect(() => {
     app.intervalTimer = setTimeout(() => {
       app.measureAndSend();
@@ -47,7 +48,7 @@ app.init = function init() {
 };
 
 app.measureAndSend = function measureAndSend() {
-  log.info('measureAndSend');
+  // log.info('measureAndSend');
   blinkLED();
   sensor.read((senorErr, measurement) => {
     if (!senorErr) {
@@ -55,7 +56,7 @@ app.measureAndSend = function measureAndSend() {
         if (transmitErr) {
           log.error(`An errorzz occurred while publishing the measurement. Err: ${transmitErr}`);
         } else {
-          log.info('Successfully send message to mqtt broker');
+          // log.info('Successfull tx to mqtt broker');
         }
       });
     } else {
@@ -64,7 +65,7 @@ app.measureAndSend = function measureAndSend() {
 
     app.intervalTimer = setTimeout(() => {
       app.measureAndSend();
-    }, config.measurement.readInterval * 1000);
+    }, config.measurement.readInterval * 10000);
   });
 };
 
