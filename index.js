@@ -56,13 +56,13 @@ app.measureAndSend = function measureAndSend() {
   blinkLED();
   sensor.read((senorErr, measurement) => {
     if (!senorErr) {
-      transmitter.send(measurement, (transmitErr) => {
-        if (transmitErr) {
-          log.error(`An error occurred while publishing the measurement. Err: ${transmitErr}`);
-        } else {
-          // log.info('Successfull tx to mqtt broker');
-        }
-      });
+      // transmitter.send(measurement, (transmitErr) => {
+      //   if (transmitErr) {
+      //     log.error(`An error occurred while publishing the measurement. Err: ${transmitErr}`);
+      //   } else {
+      //     // log.info('Successfull tx to mqtt broker');
+      //   }
+      // });
     } else {
       log.error(`An error occurred while trying to read the sensor. Err: ${senorErr}`);
     }
