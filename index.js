@@ -39,7 +39,11 @@ const app = {};
 
 app.init = function init() {
   log.info('Started hvac zone controller');
-  console.log(process.env);
+  // console.log(process.env);
+  // log.debug(`Environment vars: ${process.env.toString()}`);
+  log.info(`Logger level: ${config.log.level}`);
+  log.level(config.log.level);
+
   transmitter.connect(() => {
     app.intervalTimer = setTimeout(() => {
       app.measureAndSend();
@@ -54,13 +58,13 @@ app.measureAndSend = function measureAndSend() {
     if (!senorErr) {
       transmitter.send(measurement, (transmitErr) => {
         if (transmitErr) {
-          log.error(`An errorzz occurred while publishing the measurement. Err: ${transmitErr}`);
+          log.error(`An error occurred while publishing the measurement. Err: ${transmitErr}`);
         } else {
           // log.info('Successfull tx to mqtt broker');
         }
       });
     } else {
-      log.error(`An errorxx occurred while trying to read the sensor. Err: ${senorErr}`);
+      log.error(`An error occurred while trying to read the sensor. Err: ${senorErr}`);
     }
 
     app.intervalTimer = setTimeout(() => {
