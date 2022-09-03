@@ -18,6 +18,7 @@
 
 //         self.d_state = lightState
 //         return self.d_state
+const log = require('../lib/log');
 
 class Light {
   constructor(lightHardwareIOPin) {
@@ -26,6 +27,7 @@ class Light {
     // such as take reading from custom hardware
 
     console.log('creating light object');
+    log.info('constructing light object');
     // set the hardware IO pin object - has methods like set(light ON or OFF),
     // get(current lights state, may include custom hardware routine e.g. using RC LDR pin)
     this._hardwareIOPin = lightHardwareIOPin;
@@ -34,11 +36,16 @@ class Light {
   get state() {
     // Measure timing using GPIO4
     // abstract with intermidiate func from hardware
+    // state = getIOPinState(this._hardwareIOPin);
+    log.debug(`Get Light state: ${this._state}`);
     return this._state;
   }
 
   set state(state) {
     // set the light state
     this._state = state;
+    log.debug(`Set Light state: ${this._state}`);
+    // setIOPinState(this._hardwareIOPin, state);
   }
 }
+module.exports = Light;

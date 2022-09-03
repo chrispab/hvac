@@ -17,6 +17,9 @@ const transmitter = require('./lib/transmitter');
 // include onoff to interact with the GPIO
 const LED = new Gpio(4, 'out'); // use GPIO pin 4, and specify that it is output
 // const blinkInterval = setInterval(blinkLED, 250); // run the blinkLED function every 250ms
+const Light = require('./models/light');
+
+const light = new Light(15);
 
 function blinkLED() { // function to start blinking
   // log.info('blink');
@@ -41,7 +44,7 @@ app.init = function init() {
   log.info('Started hvac zone controller');
   // console.log(process.env);
   // log.debug(`Environment vars: ${process.env.toString()}`);
-  log.info(`Logger level: ${config.log.level}`);
+  log.info(`Setting Logger level: ${config.log.level}`);
   log.level(config.log.level);
 
   transmitter.connect(() => {
@@ -54,6 +57,8 @@ app.init = function init() {
 app.measureAndSend = function measureAndSend() {
   // log.info('measureAndSend');
   blinkLED();
+  light.state = 1;
+  light.state;
   sensor.read((senorErr, measurement) => {
     if (!senorErr) {
       // transmitter.send(measurement, (transmitErr) => {

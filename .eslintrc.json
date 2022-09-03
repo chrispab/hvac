@@ -10,6 +10,11 @@
     "parserOptions": {
         "ecmaVersion": "latest"
     },
-    "rules": {
-    }
+    // "rules": {
+    // }
+      
+        "rules": {        
+           "no-underscore-dangle": "off"
+        }
+        
 }
