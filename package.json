@@ -11,7 +11,7 @@
   "name": "hvac",
   "description": "",
   "version": "1.0.0",
-  "main": "blink.js",
+  "main": "index.js",
   "directories": {
     "doc": "docs"
   },

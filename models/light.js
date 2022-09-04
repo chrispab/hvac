@@ -26,7 +26,7 @@ class Light {
     // should have ability to R/W  and any other custom funcs
     // such as take reading from custom hardware
 
-    console.log('creating light object');
+    // console.log('creating light object');
     log.info('constructing light object');
     // set the hardware IO pin object - has methods like set(light ON or OFF),
     // get(current lights state, may include custom hardware routine e.g. using RC LDR pin)

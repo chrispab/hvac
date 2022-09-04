@@ -1,40 +1,22 @@
 /*
- * Primary file for the Workflow Engine
+ * Primary file for the hvac Engine
  */
 
 // Dependencies
 const process = require('process');
 // eslint-disable-next-line no-unused-vars
-const dotenv = require('dotenv').config();
+// const dotenv = require('dotenv').config();
+require('dotenv').config();
 
-const { Gpio } = require('onoff');
+// const { Gpio } = require('onoff');
 const config = require('./lib/config');
 const log = require('./lib/log');
 const sensor = require('./lib/sensor');
 const transmitter = require('./lib/transmitter');
-
-//-----------------------------------------------------
-// include onoff to interact with the GPIO
-const LED = new Gpio(4, 'out'); // use GPIO pin 4, and specify that it is output
-// const blinkInterval = setInterval(blinkLED, 250); // run the blinkLED function every 250ms
+const blinker = require('./lib/blinker');
 const Light = require('./models/light');
 
 const light = new Light(15);
-
-function blinkLED() { // function to start blinking
-  // log.info('blink');
-  if (LED.readSync() === 0) { // check the pin state, if the state is 0 (or off)
-    LED.writeSync(1); // set pin state to 1 (turn LED on)
-  } else {
-    LED.writeSync(0); // set pin state to 0 (turn LED off)
-  }
-}
-
-function endBlink() { // function to stop blinking
-  clearInterval(blinkInterval); // Stop blink intervals
-  LED.writeSync(0); // Turn LED off
-  LED.unexport(); // Unexport GPIO to free resources
-}
 
 // setTimeout(endBlink, 5000); // stop blinking after 5 seconds
 //------------------------------------------------------------
@@ -46,7 +28,7 @@ app.init = function init() {
   // log.debug(`Environment vars: ${process.env.toString()}`);
   log.info(`Setting Logger level: ${config.log.level}`);
   log.level(config.log.level);
-
+  // blinker.startBlinking();
   transmitter.connect(() => {
     app.intervalTimer = setTimeout(() => {
       app.measureAndSend();
@@ -56,9 +38,10 @@ app.init = function init() {
 
 app.measureAndSend = function measureAndSend() {
   // log.info('measureAndSend');
-  blinkLED();
-  light.state = 1;
-  light.state;
+  // log.error('here');
+  blinker.blinkLED();
+  // light.state = 1;
+  // light.state;
   sensor.read((senorErr, measurement) => {
     if (!senorErr) {
       // transmitter.send(measurement, (transmitErr) => {
@@ -74,7 +57,7 @@ app.measureAndSend = function measureAndSend() {
 
     app.intervalTimer = setTimeout(() => {
       app.measureAndSend();
-    }, config.measurement.readInterval * 10000);
+    }, config.measurement.readInterval * 500);
   });
 };
 
