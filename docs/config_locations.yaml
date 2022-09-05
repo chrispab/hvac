@@ -1,0 +1,179 @@
+# YAML
+
+# stores location specific params
+
+#===config params to store in config obj so tunable via web interface====
+
+common:
+  platform_name: "RPi2"
+  hardware: "RaspberryPi2"
+
+  readDelay: 5 #sensor read delay   
+  RelayOff: 0 #state for relay OFF
+  RelayOn: 1  #state for on
+  dataPath: "data/thdata.csv"
+#extraPath: "data/extradata.csv"   
+#=================hardware dependant pins values etc====================
+#----pin assignments and related hardware defs----
+  powerPin: 2    #pyhs pin 3
+  led2: 4        #phys pin 5
+  sensorPin: 3   #phys pin 5
+  heaterRelay: 5 #pyhs pin 29
+  ventRelay: 26   #phys pin 37
+  fanRelay: 11    #phys pin 23
+  relay4: 6      #pyhs pin 31
+  RCPin: 27 #phypin13
+  alivePin: 22 #phy pin 15
+  watchDogPin: 17    #phys pin 11
+  fanRelay: 13    #phys pin 33 new for radio watchdog version
+
+#placeholder items - used for items pushed from system
+  processUptime: "00:00:00"
+  systemMessage: "system message"
+  systemUpTime: "00:00:00"
+  version: "Version Placeholder"
+
+  emailSendTimeGap: 900000 # = 60 * 15 * 1000 = 900000, time in milli secs, 60 secs each 1000 ms
+  
+  radioChannel: 124 # chanel nrf radios operate on
+  
+  heartBeatInterval: 30000 #  in msecs
+
+  onlyPublishMQTTOnChange: True #only publish an mqtt message if i/o channel has changed, not ALL i/o irrespictive
+
+  min_CSV_write_interval: 6000000 #interval min bet csv writes
+  maxSensorReadErrors: 3 # max number od sensor read failures/errors before exiting aquisition
+  mqttPublishIntervalMillis: 60000 # time interval between publishing heartbeat messages via MQTT
+  mqttPublishTeleIntervalMillis: 120000 # time interval between publishing telemetry messages via MQTT
+
+  outSideTempSensor: "DS18B20-1"
+  
+locations:
+
+  id: "s"
+  locationDisplayName: "SHD"
+
+  tempSPLOn: 22.5   #
+  tempSPLOff: 14.5 #
+
+  tempAlertHi: 30.0  #hi temp alert temp
+  tempAlertLo: 13.0  #lo temp alert
+
+
+  # heatOnMs: 100000  #min time heater is on when below lo sp
+  # heatOffMs: 120000  #min time heater is off for
+  heatOnMs: 5000  #min time heater is on when below lo sp
+  heatOffMs: 10000  #min time heater is off for
+  heater_sp_offset: 0
+  heatInternalTDiffMs: 5000 #extra heat on time per 0.1 deg diff in internal temps
+  heatExternalTDiffMs: 5000 #extra heat on time per 1 deg diff to external temp
+
+  ventOnDelta: 15000 #duration vent is on in millis - minimum mark
+  ventOffDelta: 80000 #vent off duration in miili sec
+  ventPulseOnDelta: 20000 #nn msecs cooling on delta
+  vent_lon_sp_offset: -0.1 #offset
+  vent_loff_sp_offset: 1.0 #
+  ventDisableTemp: 15 #temp below which vent is disabled if loff
+  ventDisableHumi: 50 #humi below which vent is disabled if loff
+ # ventSpeedLevel: 2    #1 if vent has single speed, 2 if dual speed
+  #ventHasHighSpeed: True  #indicates if zone has dual speed vent
+  ventEnableHighSpeed: True # enable high speed if available dep on vent
+
+  fan_on_t: 60000  #vent on time ms
+  fan_off_t: 60000 #vent off time ms
+
+  emailEnabled: True
+  
+  quietMode: True
+  
+  readingPipeAddress: "NodeS"  #pipe address for receiving from wireless watchdog
+  writingPipeAddress: "Node0" # address for pipe to write to wireless watchdog
+  ackMessage: "SSS"  #message sent back on reciept of bridge watchdog ping
+  
+  remoteDBEnabled: False
+  
+
+
+locationc:
+
+  id: "c"
+  locationDisplayName: "CSV"
+
+  tempSPLOn: 21.0   #target 24.o veg mp set point max with lon
+  tempSPLOff: 15.0 #target = 21.0 veg, target loff
+
+  tempAlertHi: 39.0  #hi temp alert temp   tempAlertLo: 14.5  #lo temp alert
+  #tempAlertHi: 30.0  #hi temp alert temp
+  tempAlertLo: 14.5  #lo temp alert
+
+  #min_CSV_write_interval: 60000 #interval min bet csv writes
+
+  heatOnMs: 8000  #min time heater is on or off for in ms
+  heatOffMs: 8000  #min time heater is on or off for
+  heater_sp_offset: 0
+  heatInternalTDiffMs: 5000 #extra heat on time per 0.1 deg diff in internal temps
+  heatExternalTDiffMs: 7000 #extra heat on time per 1 deg diff to external temp
+
+  ventOnDelta: 20000 #duration vent is on in millis - minimum mark
+  ventOffDelta: 60000 #vent off duration in miili sec
+  ventPulseOnDelta: 30000 #60 secs cooling on delta
+  vent_lon_sp_offset: 0.0 #offset
+  vent_loff_sp_offset: 2.0 #
+  ventDisableTemp: 18 #temp below which vent is disabled if loff
+  ventDisableHumi: 60 #humi below which vent is disabled if loff
+  ventEnableHighSpeed: False # enable high speed if available dep on vent
+
+  fan_on_t: 40000  #vent on time
+  fan_off_t: 40000 #vent off time
+
+  emailEnabled: True
+  quietMode: True
+  
+  readingPipeAddress: "NodeC"  #pipe address for receiving from wireless watchdog
+
+  writingPipeAddress: "Node0" # address for pipe to write to wireless watchdog
+  ackMessage: "CCC"  #message sent back on reciept of arduino watchdog ping
+  
+  remoteDBEnabled: False
+
+
+locationg:
+
+  id: "g"
+  locationDisplayName: "GRG"
+
+  tempSPLOn: 23.8   # 25.2 max calced
+  tempSPLOff: 15.0 #
+
+  tempAlertHi: 26.1  #hi temp alert temp
+  tempAlertLo: 13.0  #lo temp alert
+
+  #min_CSV_write_interval: 60000 #interval min bet csv writes
+
+  heatOnMs: 6000  #min time heater is on or off for
+  heatOffMs: 30000  #min time heater is on or off for
+  heater_sp_offset: 0
+  heatInternalTDiffMs: 5000 #extra heat on time per 0.1 deg diff in internal temps
+  heatExternalTDiffMs: 5000 #extra heat on time per 1 deg diff to external temp
+
+  ventOnDelta: 10000 #duration vent is on in millis - minimum mark
+  ventOffDelta: 80000 #vent off duration in miili sec
+  ventPulseOnDelta: 30000 #60 secs cooling on delta
+  vent_lon_sp_offset: 0.0 #offset
+  vent_loff_sp_offset: 2.0 #
+  ventDisableTemp: 18 #temp below which vent is disabled if loff
+  ventDisableHumi: 65 #humi below which vent is disabled if loff
+  ventEnableHighSpeed: False # enable high speed if available dep on vent
+
+  fan_on_t: 15000  #vent on time
+  fan_off_t: 60000 #vent off time
+
+  emailEnabled: True
+  quietMode: True
+  
+  readingPipeAddress: "NodeG"  #pipe address for receiving from wireless watchdog
+  writingPipeAddress: "Node0" # address for pipe to write to wireless watchdog
+  ackMessage: "GGG"  #message sent back on reciept of  watchdog ping
+ 
+  remoteDBEnabled: False
+  

@@ -16,32 +16,33 @@ const transmitter = require('./lib/transmitter');
 const blinker = require('./lib/blinker');
 const Light = require('./models/light');
 
-const light = new Light(15);
+// Create the component parts of the hvac controller
+const light = new Light();
 
-// setTimeout(endBlink, 5000); // stop blinking after 5 seconds
 //------------------------------------------------------------
-const app = {};
+const hvac = {};
 
-app.init = function init() {
+hvac.init = function init() {
+  log.info('=======================================\n\n');
   log.info('Started hvac zone controller');
-  // console.log(process.env);
   // log.debug(`Environment vars: ${process.env.toString()}`);
+  log.debug(`config: ${JSON.stringify(config)}`);
   log.info(`Setting Logger level: ${config.log.level}`);
   log.level(config.log.level);
+
+  light.state = 1;
   // blinker.startBlinking();
   transmitter.connect(() => {
-    app.intervalTimer = setTimeout(() => {
-      app.measureAndSend();
+    hvac.intervalTimer = setTimeout(() => {
+      hvac.measureAndSend();
     });
   });
 };
 
-app.measureAndSend = function measureAndSend() {
+hvac.measureAndSend = function measureAndSend() {
   // log.info('measureAndSend');
-  // log.error('here');
   blinker.blinkLED();
-  // light.state = 1;
-  // light.state;
+
   sensor.read((senorErr, measurement) => {
     if (!senorErr) {
       // transmitter.send(measurement, (transmitErr) => {
@@ -55,29 +56,30 @@ app.measureAndSend = function measureAndSend() {
       log.error(`An error occurred while trying to read the sensor. Err: ${senorErr}`);
     }
 
-    app.intervalTimer = setTimeout(() => {
-      app.measureAndSend();
+    hvac.intervalTimer = setTimeout(() => {
+      hvac.measureAndSend();
     }, config.measurement.readInterval * 500);
   });
 };
 
-app.shutdown = function shutdown() {
-  clearInterval(app.intervalTimer);
+hvac.shutdown = function shutdown() {
+  clearInterval(hvac.intervalTimer);
   transmitter.disconnect(() => {
     process.exit();
   });
 };
 
+// handling shutdown signals
 process.on('SIGINT', () => {
   log.info('Got SIGINT, gracefully shutting down');
-  app.shutdown();
+  hvac.shutdown();
 });
 
 process.on('SIGTERM', () => {
   log.info('Got SIGTERM, gracefully shutting down');
-  app.shutdown();
+  hvac.shutdown();
 });
 
-app.init();
+hvac.init();
 
-module.exports = app;
+module.exports = hvac;

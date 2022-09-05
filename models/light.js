@@ -33,18 +33,19 @@
 //     return measurement
 
 const log = require('../lib/log');
+const config = require('../lib/config');
 
 class Light {
-  constructor(lightHardwareIOPin) {
+  constructor() {
     // pass in the hardware depedent io pin object
     // should have ability to R/W  and any other custom funcs
     // such as take reading from custom hardware
-
+    // const { LDRPin } = config.pins;
     // console.log('creating light object');
-    log.info('constructing light object');
+    log.info(`constructing light object, LDR Pin:${config.pins.LDRPin}`);
     // set the hardware IO pin object - has methods like set(light ON or OFF),
     // get(current lights state, may include custom hardware routine e.g. using RC LDR pin)
-    this._hardwareIOPin = lightHardwareIOPin;
+    this._hardwareIOPin = config.pins.LDRPin;
   }
 
   get state() {
