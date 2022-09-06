@@ -16,6 +16,8 @@ const transmitter = require('./lib/transmitter');
 const blinker = require('./lib/blinker');
 const Light = require('./models/light');
 
+log.info('\n\n');
+log.info('=======================================\n');
 // Create the component parts of the hvac controller
 const light = new Light();
 
@@ -23,7 +25,7 @@ const light = new Light();
 const hvac = {};
 
 hvac.init = function init() {
-  log.info('=======================================\n\n');
+  log.info('--------------------------------------\n\n');
   log.info('Started hvac zone controller');
   // log.debug(`Environment vars: ${process.env.toString()}`);
   log.debug(`config: ${JSON.stringify(config)}`);
