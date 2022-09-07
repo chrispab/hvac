@@ -14,21 +14,22 @@ class Light {
     // should have ability to R/W  and any other custom funcs
     // such as take reading from custom hardware
 
-    log.debug('constructing light object');
-    this._lightHardware = new LightHardware();
+    log.info('constructing light object');
+    // this._lightHardware = new LightHardware();
+    this._state = 'OFF';
   }
 
   get state() {
     // Measure timing using GPIO4
     // abstract with intermidiate func from hardware
     // state = getIOPinState(this._hardwareIOPin);
-    log.debug(`Get Light state: ${this._lightHardware.state()}`);
-    this._state = this._lightHardware.state();
+    log.info(`Get Light state: ${this._state}`);
+    // this._state = this._lightHardware.state();
     return this._state;
   }
 
   set state(state) {
-    this._lightHardware.state = state;
+    // this._lightHardware.state = state;
     this._state = state;
     log.debug(`Set Light state: ${this._state}`);
   }
