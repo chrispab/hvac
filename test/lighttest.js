@@ -1,31 +1,26 @@
-assert = require('assert');
-const log = require('../lib/log');
+const chai = require('chai');
 
-// Tip = require('../models/light.js').Tip; // program to test
+const { expect } = chai;
+
+// assert = require('assert');
+// const log = require('../lib/log');
+
 const Light = require('../models/light');
 
-// const TL = new Light();
-// new unit test
 describe('Check light', () => {
-  describe('GET  state', () => {
-    it('should return OFF', () => {
+  describe('when creating a Light', () => {
+    it('its state should be OFF', () => {
       const TL = new Light();
       const result = TL.state;
-      log.info(`result: ${result}`);
-
-      assert.equal('OFF', result);
+      expect(result).to.equal('OFF');
     });
   });
-  //   log.info(`TL.state: ${TL.state}`);
-  //   TL.state = 'ON';
-  //   log.info(`TL.state: ${TL.state}`);
-
-  describe('GET  state', () => {
-    it('should return ON', () => {
+  describe('when setting state a Light', () => {
+    it('set state ON should READ ON', () => {
       const TL = new Light();
       TL.state = 'ON';
       const result = TL.state;
-      assert.equal('ON', result);
+      expect(result).to.equal('ON');
     });
   });
 });

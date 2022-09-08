@@ -13,6 +13,7 @@ class LightHardware {
 
     // should have ability to R/W  and any other custom funcs
     // such as take reading from custom hardware
+    this._level = 500;
     this._RCPin = new Gpio(config.pins.LDRPin, 'out');
     // charge it
     log.debug('constructing LightHardware object');
@@ -20,7 +21,7 @@ class LightHardware {
   }
 
   getLevelRaw() {
-    return 500;
+    return this._level;
   }
 
   get state() {
