@@ -2,6 +2,10 @@ const { Gpio } = require('onoff');
 const log = require('../../lib/log');
 const config = require('../../lib/config');
 
+const { logic } = config;
+
+// require('../../lib/config');
+
 class LightHardware {
   constructor() {
     // hardware dependent class
@@ -16,13 +20,16 @@ class LightHardware {
 
     // should have ability to R/W  and any other custom funcs
     // such as take reading from custom hardware
-    this._state = 'OFF';// state of hardware controlling the light
+    this._state = logic.OFF;// state of hardware controlling the light
     this._sensedState; // the ambient light level determined by LDR sensor
     this._environment = config.envName;
     this._sensorLightDarkThreshold = 300;
     this._level = 500;// initial or used when in dev mode
     this._RCPin = new Gpio(config.pins.LDRPin, 'out');
-    this._lightControlPin = new Gpio(config.pins.LightControlPin, 'out');
+    if (this._environment === 'production') {
+      this._lightControlHardware = new Gpio(config.pins.LightControlPin, 'out');
+    }
+
     // charge it
     log.debug('constructing LightHardware object');
     // this._lightHardware = new LightHardware();
@@ -47,7 +54,7 @@ class LightHardware {
     if (this._environment === 'production') {
       this._state = state;
       // write to hardware to set light on/off
-      this._lightControlPin.writeSync(state);
+      this._lightControlHardware.writeSync(state);
       this._state = state;
       log.debug(`Set LightControlHardware state : ${this._environment} : ${this._state}`);
     } else {
@@ -81,7 +88,7 @@ class LightHardware {
       //     GPIO.setup(RCPin, GPIO.OUT)
       this._RCPin = new Gpio(config.pins.LDRPin, 'out');
       //     GPIO.output(RCPin, GPIO.LOW)
-      this._RCPin.writeSync(0);
+      this._RCPin.writeSync(logic.OFF);
       //     time.sleep(0.1) #give time for C to discharge
       // runs after 100 mseconds
       setTimeout(this.readLightSensor, 100);

@@ -1,4 +1,6 @@
 const log = require('../lib/log');
+const logic = require('../lib/config');
+
 // const config = require('../lib/config');
 const lightHardware = require('../hardware/raspberrypi/LightHardware');// class not object
 
@@ -14,24 +16,19 @@ class Light {
     // should have ability to R/W  and any other custom funcs
     // such as take reading from custom hardware
     // log.level(config.log.level);
-    log.info('constructing light object');
-    // this._lightHardware = new LightHardware();
-    this._state = 'OFF';
+    log.error('constructing light object');
+    this._lightHardware = new lightHardware();
+    this._state = logic.OFF;
   }
 
   get state() {
-    // Measure timing using GPIO4
-    // abstract with intermidiate func from hardware
-    // state = getIOPinState(this._hardwareIOPin);
-    this._state = lightHardware.state();
-    log.info(`Get Light state: ${this._state}`);
-    // this._state = this._lightHardware.state();
+    log.debug(`Get Light state: ${this._state}`);
+    this._state = this._lightHardware.state;
     return this._state;
   }
 
   set state(state) {
-    // this._lightHardware.state = state;
-    lightHardware.state = this._state;
+    this._lightHardware.state = state;
     this._state = state;
     log.debug(`Set Light state: ${this._state}`);
   }
