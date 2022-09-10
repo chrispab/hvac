@@ -30,9 +30,7 @@ class LightHardware {
       this._lightControlHardware = new Gpio(config.pins.LightControlPin, 'out');
     }
 
-    // charge it
     log.debug('constructing LightHardware object');
-    // this._lightHardware = new LightHardware();
   }
 
   getLevelRaw() {
@@ -80,9 +78,6 @@ class LightHardware {
   };
 
   get level() {
-  // # Function to measure res-cap charge time
-  // def RCtime (RCPin):
-
     if (this._environment === 'production') {
       //     # Discharge capacitor
       //     GPIO.setup(RCPin, GPIO.OUT)
@@ -90,7 +85,7 @@ class LightHardware {
       //     GPIO.output(RCPin, GPIO.LOW)
       this._RCPin.writeSync(logic.OFF);
       //     time.sleep(0.1) #give time for C to discharge
-      // runs after 100 mseconds
+      // give time for C to discharge - runs after 100 mseconds
       setTimeout(this.readLightSensor, 100);
 
       log.debug(`Get LightHardware level: ${this._environment} : ${this._level}`);
