@@ -1,10 +1,12 @@
 const chai = require('chai');
+const log = require('../lib/log');
+const config = require('../lib/config');
 
 const { expect } = chai;
 
-// assert = require('assert');
-// const log = require('../lib/log');
+console.log(config.log.level);
 
+log.level(config.log.level);
 const Light = require('../models/light');
 
 describe('Check light', () => {
