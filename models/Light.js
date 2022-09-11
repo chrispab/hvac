@@ -2,7 +2,7 @@ const log = require('../lib/log');
 const logic = require('../lib/config');
 
 // const config = require('../lib/config');
-const lightHardware = require('../hardware/raspberrypi/LightHardware');// class not object
+const LightHardware = require('../hardware/raspberrypi/LightHardware');// class not object
 
 class Light {
   constructor() {
@@ -17,18 +17,18 @@ class Light {
     // such as take reading from custom hardware
     // log.level(config.log.level);
     log.error('constructing light object');
-    this._lightHardware = new lightHardware();
+    this._lightHardware = new LightHardware();
     this._state = logic.OFF;
   }
 
   get state() {
     log.debug(`Get Light state: ${this._state}`);
-    this._state = this._lightHardware.state;
+    this._state = this._lightHardware.controlState;
     return this._state;
   }
 
   set state(state) {
-    this._lightHardware.state = state;
+    this._lightHardware.controlState = state;
     this._state = state;
     log.debug(`Set Light state: ${this._state}`);
   }

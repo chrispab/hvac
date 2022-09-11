@@ -7,7 +7,7 @@ const { logic } = config;
 // require('../../lib/config');
 
 class LightHardware {
-  constructor() {
+  constructor(startState = logic.OFF) {
     // hardware dependent class
     // to
     // 1. get the ambient light state - on/off - threshold for definition set by setSensorThreshold
@@ -20,8 +20,8 @@ class LightHardware {
 
     // should have ability to R/W  and any other custom funcs
     // such as take reading from custom hardware
-    this._state = logic.OFF;// state of hardware controlling the light
-    this._sensedState; // the ambient light level determined by LDR sensor
+    this._state = startState;// state of hardware controlling the light
+    // this._sensedState; // the ambient light level determined by LDR sensor
     this._environment = config.envName;
     this._sensorLightDarkThreshold = 300;
     this._level = 500;// initial or used when in dev mode
@@ -38,7 +38,7 @@ class LightHardware {
   }
 
   // get state of a controlled light source
-  get state() {
+  get controlState() {
     if (this._environment === 'production') {
       log.debug(`Get LightControlHardware state : ${this._environment} : ${this._state}`);
     } else {
@@ -48,7 +48,8 @@ class LightHardware {
   }
 
   // set state of controlled light souyrce
-  set state(state) {
+  // not implemented in hardware - extrnal timer control
+  set controlState(state) {
     if (this._environment === 'production') {
       this._state = state;
       // write to hardware to set light on/off
@@ -71,7 +72,7 @@ class LightHardware {
     //     while (GPIO.input(RCPin) == GPIO.LOW) and (measurement < 9999):
     //         measurement += 1
     //     return measurement
-    while ((this._RCPin.readSync(0) === 0) && count < 9999) {
+    while ((this._RCPin.readSync() === 0) && count < 9999) {
       count += 1;
     }
     this._level = count;
