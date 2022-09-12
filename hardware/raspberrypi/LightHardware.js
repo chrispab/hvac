@@ -3,6 +3,7 @@ const log = require('../../lib/log');
 const config = require('../../lib/config');
 
 const { logic } = config;
+const OutputPin = require('./OutputPin');
 
 // require('../../lib/config');
 
@@ -26,10 +27,10 @@ class LightHardware {
     this._sensorLightDarkThreshold = 300;
     this._level = 500;// initial or used when in dev mode
     this._RCPin = new Gpio(config.pins.LDRPin, 'out');
-    if (this._environment === 'production') {
-      this._lightControlHardware = new Gpio(config.pins.LightControlPin, 'out');
-    }
-
+    // if (this._environment === 'production') {
+    //   this._lightControlPin = new Gpio(config.pins.LightControlPin, 'out');
+    // }
+    this._lightControlPin = new OutputPin(config.pins.LightControlPin, startState);
     log.debug('constructing LightHardware object');
   }
 
@@ -39,27 +40,16 @@ class LightHardware {
 
   // get state of a controlled light source
   get controlState() {
-    if (this._environment === 'production') {
-      log.debug(`Get LightControlHardware state : ${this._environment} : ${this._state}`);
-    } else {
-      log.debug(`Get LightControlHardware state : ${this._environment} : ${this._state}`);
-    }
-    return this._state;
+    this._state = this._lightControlPin.state;
+    return this._lightControlPin.state;
   }
 
   // set state of controlled light souyrce
   // not implemented in hardware - extrnal timer control
   set controlState(state) {
-    if (this._environment === 'production') {
-      this._state = state;
-      // write to hardware to set light on/off
-      this._lightControlHardware.writeSync(state);
-      this._state = state;
-      log.debug(`Set LightControlHardware state : ${this._environment} : ${this._state}`);
-    } else {
-      this._state = state;
-      log.debug(`Set LightControlHardware state : ${this._environment} : ${this._state}`);
-    }
+    this._lightControlPin.state = state;
+    this._state = state;
+    log.debug(`Set LightControlHardware state : ${this._environment} : ${this._state}`);
   }
 
   readLightSensor = () => {
