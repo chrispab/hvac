@@ -1,6 +1,6 @@
 const { Gpio } = require('onoff');
-const config = require('../../lib/config');
-const log = require('../../lib/log');
+const config = require('../../../lib/config');
+const log = require('../../../lib/log');
 
 const { logic } = config;
 
@@ -12,10 +12,11 @@ const { logic } = config;
 class OutputPin {
   // create IOPin, with default state of OFF
   constructor(GPIOPinNumber, initialState = logic.OFF) {
+    log.debug(`Creating output pin, GPIO: ${GPIOPinNumber},ini: ${initialState}`);
+
     this._environment = config.envName;
 
     // configure as GPIO op pin
-    log.debug(`Creating output pin, GPIO: ${GPIOPinNumber}`);
     if (this._environment === 'production') {
       this._pin = new Gpio(GPIOPinNumber, 'out');
       this._pin.writeSync(initialState);

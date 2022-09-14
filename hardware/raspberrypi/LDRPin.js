@@ -31,20 +31,6 @@ class LDRPin {
     return this._level;
   }
 
-  // get state of a controlled light source
-  //   get controlState() {
-  //     this._state = this._lightControlPin.state;
-  //     return this._lightControlPin.state;
-  //   }
-
-  // set state of controlled light souyrce
-  // not implemented in hardware - extrnal timer control
-  //   set controlState(state) {
-  //     this._lightControlPin.state = state;
-  //     this._state = state;
-  //     log.debug(`Set LightControlHardware state : ${this._environment} : ${this._state}`);
-  //   }
-
   readLightSensor = () => {
     //     GPIO.setup(RCPin, GPIO.IN)  #set RC pin to hi impedance
     this._RCPin.setDirection('in');
@@ -76,6 +62,7 @@ class LDRPin {
       // this._level = this.getLevelRaw();
     } else {
       log.debug(`Get LightHardware level: ${this._environment} : ${this._level}`);
+      this._level = 500;// dummy value
     }
     return this._level;
   }
