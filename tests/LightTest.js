@@ -7,7 +7,32 @@ const { expect } = chai;
 log.level(config.log.level);
 const Light = require('../models/LightControl');
 
+const OutputPin = require(`../hardware/${config.hardware.platform}/bases/OutputPin`);
+
 const LightControlHW = require(`../hardware/${config.hardware.platform}/LightControlHW`);
+
+describe('Check OutputPin', () => {
+  describe('when creating OutputPin hardware', () => {
+    it('with no params, state should be OFF', () => {
+      const TL = new OutputPin(config.pins.LightControlPin);
+      const result = TL.state;
+      expect(result).to.equal(logic.OFF);
+    });
+    it('when creasted OutputPin with ON param, returns ON', () => {
+      const TL = new OutputPin(config.pins.LightControlPin, logic.ON);
+      const result = TL.state;
+      expect(result).to.equal(logic.ON);
+    });
+  });
+  describe('when setting state a OutputPin', () => {
+    it('set state OutputPin ON should READ ON', () => {
+      const TL = new OutputPin(config.pins.LightControlPin);
+      TL.state = logic.ON;
+      const result = TL.state;
+      expect(result).to.equal(logic.ON);
+    });
+  });
+});
 
 describe('Check LightControlHW', () => {
   describe('when creating LightControlHW hardware', () => {
