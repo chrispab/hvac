@@ -5,14 +5,14 @@ const log = require('../../../lib/log');
 const { logic } = config;
 
 /**
- * Input pin class
+ * op pin class
  *  to define io pin properties and methods
  * can be sub classed to customise
  */
 class OutputPin {
   // create IOPin, with default state of OFF
   constructor(GPIOPinNumber, initialState = logic.OFF) {
-    log.debug(`Creating output pin, GPIO: ${GPIOPinNumber},ini: ${initialState}`);
+    log.debug(`\n\nCreating output pin, GPIO: ${GPIOPinNumber},ini: ${initialState}`);
 
     this._environment = config.envName;
 
